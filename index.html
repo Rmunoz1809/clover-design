@@ -1082,7 +1082,6 @@
     }
     document.body.classList.remove('menu-open', 'locked');
     if (scroll !== false) window.scrollTo({ top: 0, behavior: 'auto' });
-    if (location.hash.slice(1).split('/')[0] !== name) history.replaceState(null, '', '#' + name);
     requestAnimationFrame(onScroll);
   }
 
@@ -1429,14 +1428,12 @@
     closeSub();
     famIndex.hidden = true; famView.hidden = false;
     window.scrollTo({ top: 0, behavior: 'auto' });
-    if (push !== false) history.replaceState(null, '', '#productos/' + key);
     setTimeout(sweep, 40);
   }
 
   function closeFam(push) {
     famView.hidden = true; famIndex.hidden = false;
     window.scrollTo({ top: 0, behavior: 'auto' });
-    if (push !== false) history.replaceState(null, '', '#productos');
     setTimeout(sweep, 40);
   }
 
@@ -1625,6 +1622,8 @@
   watch();
   railSync();
   activate(location.hash.slice(1) || 'nosotros', false);
+  /* la URL se queda limpia: sin #pestaña */
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   /* barrido periódico durante los primeros segundos: cubre el caso de que el
      navegador entregue tarde el primer scroll o restaure una posición previa */
   var boot = setInterval(sweep, 500);
